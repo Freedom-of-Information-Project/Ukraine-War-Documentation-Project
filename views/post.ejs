@@ -1,0 +1,174 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width height=device-height initial-scale=1">
+        <meta property="og:site_name" content="<%=webname%>" />
+        <meta property="og:title" content="<%=post.title.replaceAll('"','')%>" />
+        <meta property="og:description" content="<%=`A post by ${post.author.replaceAll('"','')} with ${post.comments.length} comments.`%>" />
+        <title><%=post.title%> - <%=webname%></title>
+        <style>
+            html {
+                background-color: #202020;
+                color: #cccccc;
+                font-family: sans-serif;
+                word-wrap: break-word;
+            }
+
+            a {
+                color: #ffffff;
+                text-decoration: none;
+            }
+
+            div.posts {
+                margin: auto;
+                display: block;
+                width: fit-content;
+            }
+
+            post .content {
+                max-width: min(70vw, max(50vw, 100em));
+                background-color: #202030;
+                display: block;
+                padding: 0 5px 5px 5px;
+                border: 1px solid #808080;
+            }
+
+            post .content .controls {
+                display: block;
+                text-align: right;
+            }
+
+            post {
+                display: block;
+                margin-left: 5px;
+                padding-left: 5px;
+                border-left: 2px solid #808080;
+                padding-bottom: 5px;
+                padding-top: 5px;
+            }
+
+            h3 {
+                display: block;
+                margin-top: 5px;
+            }
+            
+            h6 {
+                margin: 0;
+                padding-top: 5px;
+                display: block;
+            }
+            
+            pre {
+                white-space: pre-wrap;
+                display: block;
+            }
+
+            pre.inline {
+                display: inline;
+            }
+
+            button {
+                padding: 10px;
+                border-radius: 3px;
+                border: 1px solid #000000;
+                background-color: #000000;
+                color: #ffffff;
+            }
+            
+            textarea {
+                min-height: 25vh;
+                width: 100%;
+                color: #ffffff;
+                background-color: #303040;
+                border: 3px solid #000000;
+            }
+            
+            input {
+                color: #ffffff;
+                background-color: #303040;
+                border: 3px solid #000000;
+            }
+
+            block {
+                display: block;
+            }
+
+            img {
+                display: block;
+                margin: auto;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                max-width: 90%;
+            }
+        </style>
+    </head>
+    <body>
+        <%-email ? `<block style="text-align: center; width: 100%;">Please send any inquiries to ${email}.</block><br/>` : ''%>
+        <a style="position: fixed; bottom: 10px; right: 10px;" href="/"><button type="button">Home</button></a>
+        <div class="posts">
+            <%- (function(){
+                let ret = ''
+                let mainPost = post
+                let id = ''
+                function recurse(post) {
+                    
+                    const makeForm = id == comment || postid == -1
+                    const date = post.timestamp ? new Date(post.timestamp) : null
+                    ret += 
+                        `<post><div class="content">${date ? (`<h6>${date.toUTCString()}</h6>`) : ''}<h3>${post.author.replaceAll('<','&lt;').replaceAll('>','&gt;')}: ${post.title.replaceAll('<','&lt;').replaceAll('>','&gt;')}</h3>` + 
+                        post.content.replaceAll('<','&lt;').replaceAll('>','&gt;')
+                            .replaceAll(/\[[#] ([^"]*?) [#]\]/g, '<img src="$1">')
+                            .replaceAll(/\[[#][#] ([^"]*?) [#][#]\]/g, '<video src="$1">')
+                            .replaceAll(/(?<!")(https?:\/\/[^ \n]+)(?!")/g, '<a href="$1" target="_blank">$1</a>')
+                            .replaceAll(/\[[*] ([\w\W]*?) [*]\]/g, '<i>$1</i>')
+                            .replaceAll(/\[[*][*] ([\w\W]*?) [*][*]\]/g, '<b>$1</b>')
+                            .replaceAll(/\[[*][*][*] ([\w\W]*?) [*][*][*]\]/g, '<b><i>$1</i></b>')
+                            .replaceAll(/\[[_] ([\w\W]*?) [_]\]/g, '<u>$1</u>')
+                            .replaceAll(/\[[*][_] ([\w\W]*?) [_][*]\]/g, '<i><u>$1</u></i>')
+                            .replaceAll(/\[[*][*][_] ([\w\W]*?) [_][*][*]\]/g, '<b><u>$1</u></b>')
+                            .replaceAll(/\[[*][*][*][_] ([\w\W]*?) [_][*][*][*]\]/g, '<b><i><u>$1</u></i></b>')
+                            .replaceAll(/\[["] ([\w\W]*?) ["]\]/g, '<pre class="inline">$1</pre>')
+                            .replaceAll(/\[["]["]* \n([\w\W]*?)\n ["]["]*\]/g, '<pre>$1</pre>')
+                            .replaceAll('\n', '<br/>')
+                    ret += '<div class="controls">'
+                    if (postid != -1 || id == '') {
+                        if(makeForm) {
+                            if(postid != -1)
+                                ret += `<a href="/post/${postid}">[Nevermind]</a>`
+                            ret += 
+                                `</div></div><post><div class="content"><form method="post">` +
+                                `<h3>` +
+                                `<input type="username" name="name" ${fake ? `value="${post.comments[post.comments.length - 1].author.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")}"` : 'value="Anonymous"'} required>: ` + 
+                                `<input type="" name="title" placeholder="Title" ${fake ? `value="${post.comments[post.comments.length - 1].title.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")}"` : ''} required>` + 
+                                `</h3>` + 
+                                `<textarea id=edit name="content" placeholder="So basically, ..." required>` +
+                                (fake ? post.comments[post.comments.length - 1].content.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;") : '') +
+                                `</textarea><br/><br/>` + 
+                                `<button type="submit" name="fake" value="no">Submit</button> ` +
+                                `<button type="submit" name="fake" value="yes">Preview</button>` + 
+                                `</form></div></post><div>`
+                        }
+                        else if (!fake) 
+                            ret += `<a href="/comment/${postid}/${id}#edit">[Reply]</a> </div>`
+                        else
+                            ret += '</div>'
+                    }
+                    else if (!fake)
+                        ret += `<a href="/post/${id}">[Open]</a></div>`
+                    else
+                        ret += '</div>'
+                    ret += '</div>'
+                    for(let i = post.comments.length - 1; i >= 0; i--) {
+                        const pid = id
+                        id += i + '_'
+                        recurse(post.comments[i])
+                        id = pid
+                    }
+                    ret += '</post>'
+                }
+                
+                recurse(post)
+                return ret
+            })() %>
+        </div>
+    <body>
+<html>
