@@ -36,9 +36,7 @@ function getRedditPosts(notify, subreddit) {
                     newPosts.unshift(post)
                 }
                 for(let post of newPosts) {
-                    if(post.selftext === '')
-                        continue
-                    let unified = { source: 'reddit:' + subreddit.substring(2), authorName: post.author, title: post.title, text: post.selftext.replace(/\[.*?\]\((.*?)\)/g, '$1'), url: post.url, images: [] }
+                    let unified = { source: 'reddit:' + subreddit.substring(2), authorName: post.author, title: post.title, text: post.selftext.replace(/\[.*?\]\((.*?)\)/g, '$1'), url: 'https://reddit.com/' + post.permalink, images: [] }
                     notify(unified);
                     (lastIDs.reddit[subreddit] || (lastIDs.reddit[subreddit] = {}))[post.id] = 1
                 }
