@@ -29,7 +29,7 @@ function getRedditPosts(notify, subreddit) {
                 let newPosts = []
                 for(let post of parsed.data.children) {
                     post = post.data
-                    if(post.id === lastIDs.reddit[subreddit]) {
+                    if((lastIDs.reddit[subreddit] || {})[post.id]) {
                         break // Exit loop, the posts following this are already indexed
                     }
                     console.log("Found new post!")
@@ -39,8 +39,8 @@ function getRedditPosts(notify, subreddit) {
                     if(post.selftext === '')
                         continue
                     let unified = { source: 'reddit:' + subreddit.substring(2), authorName: post.author, title: post.title, text: post.selftext.replace(/\[.*?\]\((.*?)\)/g, '$1'), url: post.url, images: [] }
-                    notify(unified)
-                    lastIDs.reddit[subreddit] = post.id
+                    notify(unified);
+                    (lastIDs.reddit[subreddit] || (lastIDs.reddit[subreddit] = {}))[post.id] = 1
                 }
             } catch(e) {
                 console.log(e)
