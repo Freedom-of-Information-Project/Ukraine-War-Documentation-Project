@@ -5,7 +5,7 @@ let lastIDs = {
 
 function getRedditPosts(notify, subreddit) {
     // TODO This is callback hell
-    http.get(`https://reddit.com/${subreddit}/new.json`, res => {
+    http.get(`https://reddit.com/${subreddit}/new.json?limit=100`, res => {
         const { statusCode } = res;
         let error;
         // Any 2xx status code signals a successful response but
@@ -59,11 +59,11 @@ module.exports = function (config) {
         }
         config.save.lastIDs = lastIDs
     }
-    setInterval(getReddit, 30000)
+    setInterval(getReddit, 10000)
     function getTwitter() {
         // TODO implement this
     }
-    setInterval(getTwitter, 60000)
+    setInterval(getTwitter, 10000)
     return {
         getReddit: getReddit,
         getTwitter: getTwitter,
