@@ -59,7 +59,7 @@ postGetter.onPost(function onPostDiscord(post) {
 
     webhook.send({
         embeds: [{
-            author: dbpost.author,
+            author: {name: dbpost.author},
             title: dbpost.title,
             description: dbpost.content,
             timestamp: dbpost.timestamp,
