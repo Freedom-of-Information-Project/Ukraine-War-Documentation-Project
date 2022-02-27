@@ -12,6 +12,7 @@ const postGetter = new PostGetter({
         "r/UkraineWarReports",
         "r/RussianWarCrimes",
         "r/RussiaUkraineWar2022",
+        "r/UkrainianConflict",
         "r/RussianWarSecrets"
     ],
     twitter: [
