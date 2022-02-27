@@ -1,6 +1,8 @@
 const Express = require('express')
 const bdb = require('bdb.js')
 const PostGetter = require('./postgetter.js')
+const {WebhookClient} = require('discord.js')
+const webhook = new WebhookClient(process.env.webhook)
 const postGetter = new PostGetter({
     reddit: [
         "r/ww3",
@@ -51,6 +53,22 @@ postGetter.onPost(function onPost(post) {
     }
 
     posts.push(dbpost)
+})
+postGetter.onPost(function onPostDiscord(post) {
+    let dbpost = { timestamp: new Date().getTime(), author: post.source + '/' + post.authorName, title: post.title, content: post.text, comments: [ { author: 'SYSTEM', title: 'Post source', content: post.url, comments: [] } ] }
+
+    webhook.send({
+        embeds: [{
+            author: dbpost.author,
+            title: dbpost.title,
+            description: dbpost.content,
+            timestamp: dbpost.timestamp,
+            fields: [{
+                name: 'Post source',
+                value: post.url
+            }]
+        }]
+    })
 })
 postGetter.getReddit()
 postGetter.getTwitter()
