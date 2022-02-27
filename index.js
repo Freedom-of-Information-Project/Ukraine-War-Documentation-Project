@@ -6,7 +6,10 @@ const postGetter = new PostGetter({
         "r/ww3",
         "r/CombatFootage",
         "r/russia",
-        "r/ukraine"
+        "r/ukraine",
+        "r/UkraineWarReports",
+        "r/RussianWarCrimes",
+        "r/RussiaUkraineWar2022"
     ],
     twitter: [
         "WW3updated"
