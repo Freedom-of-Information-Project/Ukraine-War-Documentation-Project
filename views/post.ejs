@@ -160,7 +160,8 @@
                     for(let i = post.comments.length - 1; i >= 0; i--) {
                         const pid = id
                         id += i + '_'
-                        recurse(post.comments[i])
+                        if (post.comments[i])
+                            recurse(post.comments[i])
                         id = pid
                     }
                     ret += '</post>'
