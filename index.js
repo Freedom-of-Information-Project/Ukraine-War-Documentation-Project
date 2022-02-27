@@ -20,7 +20,7 @@ const postGetter = new PostGetter({
 const posts = bdb.load('posts.json', 1)
 
 const webname = 'The Freedom Of Information Project'
-const email = 'fopp@mail.tudbut.de'
+const email = 'foip@mail.tudbut.de'
 
 const server = new Express()
 
