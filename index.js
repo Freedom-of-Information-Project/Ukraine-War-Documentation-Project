@@ -57,18 +57,22 @@ postGetter.onPost(function onPost(post) {
 postGetter.onPost(function onPostDiscord(post) {
     let dbpost = { timestamp: new Date().getTime(), author: post.source + '/' + post.authorName, title: post.title, content: post.text, comments: [ { author: 'SYSTEM', title: 'Post source', content: post.url, comments: [] } ] }
 
-    webhook.send({
-        embeds: [{
-            author: {name: dbpost.author},
-            title: dbpost.title,
-            description: dbpost.content,
-            timestamp: dbpost.timestamp,
-            fields: [{
-                name: 'Post source',
-                value: post.url
+    try {
+        webhook.send({
+            embeds: [{
+                author: {name: dbpost.author},
+                title: dbpost.title,
+                description: dbpost.content,
+                timestamp: dbpost.timestamp,
+                fields: [{
+                    name: 'Post source',
+                    value: post.url
+                }]
             }]
-        }]
-    })
+        })
+    } catch (e) {
+        console.log(e)
+    }
 })
 postGetter.getReddit()
 postGetter.getTwitter()
