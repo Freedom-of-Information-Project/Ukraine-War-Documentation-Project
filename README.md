@@ -3,10 +3,7 @@
 
 # [VIEW THE SITE](http://modern.tudbut.de/) 
 
-
-
 A NoScript website that updates with content from Ukraine and Russian related combat and informaiton subreddits
-
 
 # Sources 
 - r/WW3
@@ -16,9 +13,11 @@ A NoScript website that updates with content from Ukraine and Russian related co
 - r/UkraineWarReports
 - r/RussianWarCrimes
 - r/RussiaUkraineWar2022
+
 ## Sources Update Every 10 Seconds 
+
 We Will Be Soon Moving To A Tor Hidden Service To Improve The Anonymity Of Our Users
 
-This has been writen in server side javascript to allow the use of NoScript 
+This has been written in server-side JavaScript to allow the use of NoScript 
 
 
