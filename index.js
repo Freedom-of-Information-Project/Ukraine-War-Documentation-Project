@@ -2,7 +2,7 @@ const Express = require('express')
 const bdb = require('bdb.js')
 const PostGetter = require('./postgetter.js')
 const {WebhookClient} = require('discord.js')
-const webhook = new WebhookClient({url: process.env.webhook})
+const webhook = new WebhookClient({url: process.argv[3]})
 const postGetter = new PostGetter({
     reddit: [
         "r/ww3",
