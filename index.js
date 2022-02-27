@@ -69,7 +69,7 @@ postGetter.onPost(function onPostDiscord(post) {
                     value: post.url
                 }]
             }]
-        })
+        }).catch(console.log)
     } catch (e) {
         console.log(e)
     }
