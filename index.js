@@ -19,7 +19,7 @@ const postGetter = new PostGetter({
 
 const posts = bdb.load('posts.json', 1)
 
-const webname = 'The Freedom Of Press Project'
+const webname = 'The Freedom Of Information Project'
 const email = 'fopp@mail.tudbut.de'
 
 const server = new Express()
@@ -66,7 +66,7 @@ server.use(require('body-parser').urlencoded({extended: false}))
 
 server.all('/', function get(req, res) {
     const fake = req.body.fake === 'yes'
-    let mainPage = {author: webname, title: 'All posts', content: 'These are all the posts on the board:', comments: []}
+    let mainPage = {author: webname, title: 'All posts', content: 'Remember that there is tons of propaganda! These are all the posts the scraper found so far:', comments: []}
     for (let i = 0; i < posts.length && i < 2000; i++) {
         mainPage.comments.push({timestamp: posts[i].timestamp, author: posts[i].author, title: posts[i].title, content: posts[i].content, comments: []}) 
     }
