@@ -1,7 +1,7 @@
 # Freedom Of Information Project
 ## _Information Is A Human Right_
 
-# [VIEW THE SITE](http://modern.tudbut.de/) 
+# [VIEW THE SITE](https://tudbut.de/) 
 
 A NoScript website that updates with content from Ukraine and Russian related combat and informaiton subreddits
 
