@@ -46,6 +46,25 @@ function replace(req, regex, repl) {
     req.query = query
 }
 
+function postDiscord(dbpost) {
+    try {
+        webhook.send({
+            embeds: [{
+                author: {name: dbpost.author},
+                title: dbpost.title,
+                description: dbpost.content,
+                timestamp: dbpost.timestamp,
+                fields: [{
+                    name: 'Post source',
+                    value: post.url || "Forum"
+                }]
+            }]
+        }).catch(console.log)
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 postGetter.onPost(function onPost(post) {
     let dbpost = { timestamp: new Date().getTime(), author: post.source + '/' + post.authorName, title: post.title, content: post.text, comments: [ { author: 'SYSTEM', title: 'Post source', content: post.url, comments: [] } ] }
 
@@ -58,23 +77,8 @@ postGetter.onPost(function onPost(post) {
 })
 postGetter.onPost(function onPostDiscord(post) {
     let dbpost = { timestamp: new Date().getTime(), author: post.source + '/' + post.authorName, title: post.title, content: post.text, comments: [ { author: 'SYSTEM', title: 'Post source', content: post.url, comments: [] } ] }
-
-    try {
-        webhook.send({
-            embeds: [{
-                author: {name: dbpost.author},
-                title: dbpost.title,
-                description: dbpost.content,
-                timestamp: dbpost.timestamp,
-                fields: [{
-                    name: 'Post source',
-                    value: post.url
-                }]
-            }]
-        }).catch(console.log)
-    } catch (e) {
-        console.log(e)
-    }
+    
+    postDiscord(dbpost)
 })
 postGetter.getReddit()
 postGetter.getTwitter()
@@ -102,6 +106,7 @@ server.all('/', function get(req, res) {
             mainPage.comments.push(post)
             res.render('post.ejs', {post: mainPage, postid: '-1', webname: webname, email: email, comment: '', fake: true})
         } else {
+            postDiscord(post)
             posts.push(post)
             res.redirect(`/`)
         }
