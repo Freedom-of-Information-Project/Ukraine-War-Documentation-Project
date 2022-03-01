@@ -46,7 +46,7 @@ function replace(req, regex, repl) {
     req.query = query
 }
 
-function postDiscord(dbpost) {
+function postDiscord(dbpost, url) {
     try {
         webhook.send({
             embeds: [{
@@ -56,7 +56,7 @@ function postDiscord(dbpost) {
                 timestamp: dbpost.timestamp,
                 fields: [{
                     name: 'Post source',
-                    value: post.url || "Forum"
+                    value: url || "Forum"
                 }]
             }]
         }).catch(console.log)
@@ -78,7 +78,7 @@ postGetter.onPost(function onPost(post) {
 postGetter.onPost(function onPostDiscord(post) {
     let dbpost = { timestamp: new Date().getTime(), author: post.source + '/' + post.authorName, title: post.title, content: post.text, comments: [ { author: 'SYSTEM', title: 'Post source', content: post.url, comments: [] } ] }
     
-    postDiscord(dbpost)
+    postDiscord(dbpost, post.url)
 })
 postGetter.getReddit()
 postGetter.getTwitter()
