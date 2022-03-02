@@ -1,13 +1,7 @@
 const Express = require('express')
 const bdb = require('bdb.js')
 const PostGetter = require('./postgetter.js')
-
-const { Client, Intents, WebhookClient } = require("discord.js");
-const client = new Client({
-    restTimeOffset: 0,
-    shards: "auto",
-    intents: 641,
-  });
+const {WebhookClient} = require('discord.js')
 const webhook = new WebhookClient({url: process.argv[3]})
 const postGetter = new PostGetter({
     reddit: [
@@ -193,31 +187,3 @@ let PORT = process.argv[2]
 if(!PORT) PORT = process.env.PORT
 if(!PORT) PORT = 8080
 server.listen(Number(PORT), () => console.log(PORT))
-
-
-let prefix = `?`
-
-module.exports = {client };
-client.on("ready", () => {
-  console.log(`discord-bot-online`);
-  client.user.setActivity("http://tudbut.de/, prefix ?", { type: "WATCHING" });
-});
-
-client.on("messageCreate", async (message) => {
-  if (!message.guild || message.author.bot) return;
-  if (!message.content.startsWith(prefix)) return;
-
-  let args = message.content.slice(prefix.length).trim().split(" ");
-  let cmd = args.shift()?.toLowerCase();
-
-  require("./modules/1.js")(client, message, cmd, args);
-
-});
-
- 
-
-const {token, } = require(`./solution/token.json`);
-
-client.login(token)
-
-
