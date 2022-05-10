@@ -7,7 +7,7 @@ const postGetter = new PostGetter({
     reddit: [
         "r/ww3",
         "r/CombatFootage",
-        "r/russia",
+        "r/openrussia",
         "r/ukraine",
         "r/UkraineWarReports",
         "r/RussianWarCrimes",
@@ -25,6 +25,7 @@ const posts = bdb.load('posts.json', 1)
 
 const webname = 'The Ukraine War Documentation Project'
 const email = 'foip@mail.tudbut.de'
+const domain = 'https://tudbut.de'
 
 const server = new Express()
 
@@ -52,6 +53,7 @@ function postDiscord(dbpost, url) {
             embeds: [{
                 author: {name: dbpost.author},
                 title: dbpost.title,
+                url: domain + '/post/' + posts.length,
                 description: dbpost.content,
                 timestamp: dbpost.timestamp,
                 fields: [{
