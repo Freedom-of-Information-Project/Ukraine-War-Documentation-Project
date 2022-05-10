@@ -57,10 +57,16 @@ function postDiscord(dbpost, url, id) {
                 url: domain + '/post/' + id,
                 description: dbpost.content,
                 timestamp: dbpost.timestamp,
-                fields: [{
-                    name: 'Post source',
-                    value: url || "Forum"
-                }]
+                fields: [
+                    {
+                        name: 'Post source',
+                        value: url || "Forum"
+                    },
+                    {
+                        name: 'Forum link',
+                        value: domain + '/post/' + id
+                    }
+                ]
             }]
         }).catch(console.log)
     } catch (e) {
