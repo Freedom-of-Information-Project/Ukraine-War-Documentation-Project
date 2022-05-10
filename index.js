@@ -13,7 +13,8 @@ const postGetter = new PostGetter({
         "r/RussianWarCrimes",
         "r/RussiaUkraineWar2022",
         "r/UkrainianConflict",
-        "r/RussianWarSecrets"
+        "r/RussianWarSecrets",
+        "r/RussiaWarInUkraine"
     ],
     twitter: [
         "WW3updated"
@@ -47,13 +48,13 @@ function replace(req, regex, repl) {
     req.query = query
 }
 
-function postDiscord(dbpost, url) {
+function postDiscord(dbpost, url, id) {
     try {
         webhook.send({
             embeds: [{
                 author: {name: dbpost.author},
                 title: dbpost.title,
-                url: domain + '/post/' + posts.length,
+                url: domain + '/post/' + id,
                 description: dbpost.content,
                 timestamp: dbpost.timestamp,
                 fields: [{
@@ -80,7 +81,7 @@ postGetter.onPost(function onPost(post) {
 postGetter.onPost(function onPostDiscord(post) {
     let dbpost = { timestamp: new Date().getTime(), author: post.source + '/' + post.authorName, title: post.title, content: post.text, comments: [ { author: 'SYSTEM', title: 'Post source', content: post.url, comments: [] } ] }
     
-    postDiscord(dbpost, post.url)
+    postDiscord(dbpost, post.url, posts.length - 1)
 })
 postGetter.getReddit()
 postGetter.getTwitter()
