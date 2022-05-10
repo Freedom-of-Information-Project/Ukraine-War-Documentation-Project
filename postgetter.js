@@ -1,6 +1,7 @@
-const http = require('follow-redirects').https
+const http = require('follow-redirects').https;
 let lastIDs = { 
-    reddit: {}, twitter: {}
+    reddit: {}, 
+    twitter: {}
 }
 
 function getRedditPosts(notify, subreddit) {
