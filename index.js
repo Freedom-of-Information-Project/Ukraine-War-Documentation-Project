@@ -115,7 +115,7 @@ server.all('/', function get(req, res) {
             mainPage.comments.push(post)
             res.render('post.ejs', {post: mainPage, postid: '-1', webname: webname, email: email, comment: '', fake: true})
         } else {
-            postDiscord(post)
+            postDiscord(post, null, posts.length)
             posts.push(post)
             res.redirect(`/`)
         }
