@@ -103,7 +103,12 @@ server.use(require('body-parser').urlencoded({extended: false}))
 
 server.all('/', function get(req, res) {
     const fake = req.body.fake === 'yes'
-    let mainPage = {author: webname, title: 'All posts', content: 'Remember that there is tons of propaganda! These are all the posts the scraper found so far:', comments: []}
+    let mainPage = {
+        author: webname, 
+        title: 'All posts', 
+        content: '[** Discords to check out: **]\n- Ukraine Conflict: [_ https://discord.gg/C2crXwzTa5 _] - News and updates, well filtered, and a big community of over 2000 members.\n- WW3 News & Documentation: [_ https://discord.gg/2VKmj6wXbM _] - I release the post database here occasionally, and post some filtered news.\n\nRemember that there is tons of propaganda! These are all the posts the scraper found so far:', 
+        comments: []
+    }
     for (let i = 0; i < posts.length - 2000; i++) 
         mainPage.comments.push(null)
     for (let i = Math.max(0, posts.length - 2000); i < posts.length; i++) {
