@@ -27,6 +27,7 @@ const posts = bdb.load('posts.json', 1)
 const webname = 'The Ukraine War Documentation Project'
 const email = 'foip@mail.tudbut.de'
 const domain = 'https://tudbut.de'
+const bannedWords = [ '[URL=', 'URL=', '[url=', 'url=', '[/url]', '[/URL]' ]
 
 const server = new Express()
 
@@ -120,6 +121,12 @@ server.all('/', function get(req, res) {
             mainPage.comments.push(post)
             res.render('post.ejs', {post: mainPage, postid: '-1', webname: webname, email: email, comment: '', fake: true})
         } else {
+            for(let word of bannedWords) {
+                if(post.content.includes(word)) {
+                    res.redirect(`/`)
+                    return
+                }
+            }
             postDiscord(post, null, posts.length)
             posts.push(post)
             res.redirect(`/`)
