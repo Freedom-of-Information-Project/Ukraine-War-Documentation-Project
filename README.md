@@ -1,5 +1,5 @@
-# Freedom Of Information Project
-## _Information Is A Human Right_
+# Freedom Of Information Project: Ukraine War Documentation Project
+## _Humans have a right to information_
 
 # [VIEW THE SITE](https://tudbut.de/) 
 
