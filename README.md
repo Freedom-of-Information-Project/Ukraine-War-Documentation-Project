@@ -8,11 +8,14 @@ A NoScript website that updates with content from Ukraine and Russian related co
 # Sources 
 - r/WW3
 - r/CombatFootage
-- r/russia
+- r/openrussia
 - r/ukraine
 - r/UkraineWarReports
 - r/RussianWarCrimes
 - r/RussiaUkraineWar2022
+- r/UkrainianConflict
+- r/RussianWarSecrets
+- r/RussiaWarInUkraine
 
 ## Sources Update Every 10 Seconds 
 
