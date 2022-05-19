@@ -216,4 +216,5 @@ server.all('/comment', function get(req, res) {
 let PORT = process.argv[2]
 if(!PORT) PORT = process.env.PORT
 if(!PORT) PORT = 8080
+console.log(PORT)
 server.listen(Number(PORT), () => console.log(PORT))
