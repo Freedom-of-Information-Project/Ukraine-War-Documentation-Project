@@ -29,7 +29,8 @@ const posts = bdb.load('posts.json', 1)
 const webname = 'The Ukraine War Documentation Project'
 const email = 'foip@mail.tudbut.de'
 const domain = 'https://tudbut.de'
-const bannedWords = [ /\[URL=/, /URL=/, /\[url=/, /url=/, /\[\/url\]/, /\[\/URL\]/, /http(.*)\.jp/ ]
+const bannedTitleWords = [ /http([^ ]*)/ ]
+const bannedWords = [ /\[URL=/, /URL=/, /\[url=/, /url=/, /\[\/url\]/, /\[\/URL\]/, /http([^ ]*)\.jp/, /robot/i, /finance/i, /financial/i, /ficken/i, /penis/i, /knospe/i ]
 
 const server = new Express()
 
@@ -106,6 +107,8 @@ server.use(require('body-parser').urlencoded({extended: false}))
 
 server.all('/', function get(req, res) {
     const fake = req.body.fake === 'yes'
+    if(req.body.content?.length > 5000) 
+        return
     let mainPage = {
         author: webname, 
         title: 'All posts', 
@@ -125,7 +128,13 @@ server.all('/', function get(req, res) {
         } else {
             post.content += (req.body.secret && req.body.secret !== '' ? ('\n\n[* Signed: [" ' + req.body.secret.sha512().sha512().sha256() + ' "] *]') : '\n\n[* Not signed *]')
             for(let word of bannedWords) {
-                if(word.test(post.content)) {
+                if(word.test(post.content) || word.test(post.title) || word.test(post.author)) {
+                    res.redirect(`/`)
+                    return
+                }
+            }
+            for(let word of bannedTitleWords) {
+                if(word.test(post.title) || word.test(post.author)) {
                     res.redirect(`/`)
                     return
                 }
@@ -147,6 +156,8 @@ server.get('/post', function get(req, res) {
     }
 })
 server.all('/comment', function get(req, res) {
+    if(req.body.content?.length > 5000) 
+        return
     if(req.query.id) {
         let id = req.query.id
         let comment = req.query.comment 
