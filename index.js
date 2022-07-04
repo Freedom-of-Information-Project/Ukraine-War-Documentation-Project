@@ -31,6 +31,9 @@ const email = 'foip@mail.tudbut.de'
 const domain = 'https://tudbut.de'
 const bannedTitleWords = [ /http([^ ]*)/ ]
 const bannedWords = [ /\[URL=/, /URL=/, /\[url=/, /url=/, /\[\/url\]/, /\[\/URL\]/, /http([^ ]*)\.jp/, /robot/i, /finance/i, /financial/i, /ficken/i, /penis/i, /knospe/i ]
+const lastPostAuthor = "";
+const lastPostTitle = "";
+const lastPostContent = "";
 
 const server = new Express()
 
@@ -126,6 +129,9 @@ server.all('/', function get(req, res) {
       mainPage.comments.push(post)
       res.render('post.ejs', {post: mainPage, postid: '-1', webname: webname, email: email, comment: '', fake: true, secret: req.body.secret || ''})
     } else {
+      if(lastPostAuthor === req.body.name) return;
+      if(lastPostTitle === req.body.title) return;
+      if(lastPostContent === req.body.content) return;
       post.content += (req.body.secret && req.body.secret !== '' ? ('\n\n[* Signed: [" ' + req.body.secret.sha512().sha512().sha256() + ' "] *]') : '\n\n[* Not signed *]')
       for(let word of bannedWords) {
         if(word.test(post.content) || word.test(post.title) || word.test(post.author)) {
