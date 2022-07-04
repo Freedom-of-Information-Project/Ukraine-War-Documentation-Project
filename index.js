@@ -132,6 +132,7 @@ server.all('/', function get(req, res) {
       if(lastPostAuthor === req.body.name) return;
       if(lastPostTitle === req.body.title) return;
       if(lastPostContent === req.body.content) return;
+      lastPostAuthor = req.body.name; lastPostTitle = req.body.title; lastPostContent = req.body.content;
       post.content += (req.body.secret && req.body.secret !== '' ? ('\n\n[* Signed: [" ' + req.body.secret.sha512().sha512().sha256() + ' "] *]') : '\n\n[* Not signed *]')
       for(let word of bannedWords) {
         if(word.test(post.content) || word.test(post.title) || word.test(post.author)) {
