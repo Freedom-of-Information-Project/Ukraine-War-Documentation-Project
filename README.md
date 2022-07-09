@@ -1,8 +1,6 @@
 # Freedom Of Information Project: Ukraine War Documentation Project
 ## _Humans have a right to information_
 
-# [VIEW THE SITE](https://tudbut.de/) 
-
 A NoScript website that updates with content from Ukraine and Russian related combat and informaiton subreddits
 
 # Sources 
